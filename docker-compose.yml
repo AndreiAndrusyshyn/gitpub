@@ -1,0 +1,76 @@
+version: '3.5'
+
+services:
+  web:
+    image: node:10-slim
+    container_name: pubgit-dev-web
+    networks:
+        - pubgit-dev
+#    restart: always
+    volumes:
+        - ./web:/web:z
+#        - ./web/src/:/web/src/:z
+#        - ./web/public/:/web/public/:z
+#        - ./web/package.json:/web/package.json:z
+    links:
+      - api
+    ports:
+        - '127.0.0.1:3000:3000'
+    command: /bin/bash -c "cd /web/ && yarn && npm run dev"
+  api:
+    image: node:10-slim
+    container_name: pubgit-dev-api
+    networks:
+      - pubgit-dev
+    restart: always
+    volumes:
+        - ./api:/api:z
+    links:
+      - db
+    env_file: './.env'
+    command: /bin/bash -c "cd /api/ && npm install && npm run start"
+    ports:
+      - '3041:3040'
+  db:
+    build: ./db
+    container_name: pubgit-dev-db
+    networks:
+      - pubgit-dev
+    restart: always
+    ports:
+      - 5436:5432
+    volumes:
+      - db:/var/lib/postgresql/data
+    env_file:
+      - '.env'
+    environment:
+      - POSTGRES_USER=pubgit
+  adminer:
+    image: adminer
+    container_name: pubgit-dev-adminer
+    networks:
+      - pubgit-dev
+    restart: always
+    ports:
+      - 4024:9090
+    links:
+      - elasticsearch
+  elasticsearch:
+    image: elasticsearch:6.8.4
+    container_name: pubgit-dev-elasticsearch
+    networks:
+      - pubgit-dev
+    restart: always
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+volumes:
+  db:
+    name: pubgit-dev-db
+  esdata:
+    name: pubgit-dev-esdata
+
+networks:
+  pubgit-dev:

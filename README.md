@@ -98,7 +98,7 @@ npm install
 npm run docker-dev
 ```
 
-You have 2 applications running
+You have 4 applications running
 
 [web http://localhost:3000](http://localhost:3000)
 

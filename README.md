@@ -100,13 +100,13 @@ npm run docker-dev
 
 You have 2 applications running
 
-[web http://localhost:3001](http://localhost:3000)
+[web http://localhost:3000](http://localhost:3000)
 
-[feathers api http://localhost:3020](http://localhost:3040)
+[feathers api http://localhost:3040](http://localhost:3040)
 
-[postgres http://localhost:3020](http://localhost:5436)
+[postgres http://localhost:5436](http://localhost:5436)
 
-[adminer http://localhost:3020](http://localhost:4024)
+[adminer http://localhost:4024](http://localhost:4024)
 
 Credential for connection to DB
 
